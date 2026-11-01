@@ -8,8 +8,6 @@
     
     <link rel="icon" href="../file/icon.png">
     <link rel="apple-touch-icon" href="../file/icon.png">
-    <link rel="icon" sizes="192x192" href="../file/icon.png">
-    <meta property="og:image" content="../file/icon.png">
 
     <style>
         body, html {
@@ -41,186 +39,134 @@
             flex-grow: 1;
             display: flex;
             flex-direction: column;
-            padding: 20px;
-            background-color: #f9f9f9;
-            overflow-y: auto;
-        }
-        .admin-only { display: flex; }
-        .is-member .admin-only { display: none !important; }
-        
-        .top-action-bar {
-            display: flex;
-            justify-content: flex-end;
-            margin-bottom: 15px;
-        }
-        .btn-create {
-            background-color: #0066cc;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        .btn-create:hover { background-color: #0055aa; }
-
-        .search-panel {
+            padding: 30px;
             background-color: #ffffff;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-        .search-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-            margin-bottom: 15px;
-        }
-        .input-group { display: flex; flex-direction: column; gap: 5px; font-size: 14px; }
-        .input-group input, .input-group select {
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        .btn-search {
-            background-color: #333;
-            color: white;
-            border: none;
-            padding: 10px 30px;
-            border-radius: 5px;
-            cursor: pointer;
-            width: 100%;
-            font-weight: bold;
-        }
-
-        .result-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-        }
-        .member-card {
-            background-color: #ffffff;
-            border-radius: 10px;
-            padding: 15px;
-            display: flex;
-            gap: 15px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-        .member-photo-area img {
-            width: 90px;
-            aspect-ratio: 3 / 4;
-            object-fit: cover;
-            border-radius: 5px;
-            background-color: #eee;
-        }
-        .member-info-area {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            gap: 5px;
-        }
-        .info-top-row {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .member-id { font-size: 12px; color: #666; }
-        .name-kanji { font-size: 18px; font-weight: bold; color: #333; margin-top: 5px; }
-        .name-kana { font-size: 12px; color: #888; }
-        .role-badge {
-            padding: 4px 8px;
-            border-radius: 12px;
-            color: #ffffff;
-            font-size: 12px;
-            font-weight: bold;
-        }
-        .role-admin { background-color: #800080; }
-        .role-member { background-color: #FFAA00; }
-
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(0,0,0,0.5);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-        .modal-overlay.show { display: flex; }
-        .modal-content {
-            background-color: #fff;
-            width: 80%;
-            max-width: 800px;
-            max-height: 90vh;
-            border-radius: 10px;
-            padding: 20px;
             overflow-y: auto;
             position: relative;
         }
-        .modal-close {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            font-size: 24px;
-            cursor: pointer;
-            background: none;
-            border: none;
-        }
-        .modal-title { margin-top: 0; margin-bottom: 20px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
-        .form-layout {
+        
+        .action-bar {
             display: flex;
-            gap: 20px;
+            align-items: center;
+            margin-bottom: 20px;
         }
-        .form-left {
-            width: 150px;
-            flex-shrink: 0;
+        .action-check {
             display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .form-left img {
-            width: 100%;
-            aspect-ratio: 3 / 4;
-            object-fit: cover;
+            align-items: center;
+            border: 1px solid #ccc;
+            padding: 5px 8px;
             border-radius: 5px;
-            background-color: #eee;
+            margin-right: 15px;
+            cursor: pointer;
         }
-        .form-left input[type="file"] { font-size: 12px; }
-        .form-right {
-            flex-grow: 1;
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
+        .action-check input { margin: 0 5px 0 0; }
+        .action-check span { font-size: 10px; margin-left: 5px; }
+
+        .btn-action {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background-color: #ffffff;
+            border: 1px solid #ccc;
+            padding: 6px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 13px;
+            color: #333;
+            margin-right: 15px;
         }
-        .form-full-width { grid-column: span 2; }
-        .section-title { grid-column: span 2; font-size: 14px; margin-top: 10px; border-bottom: 1px solid #ccc; padding-bottom: 5px; }
-        .school-table {
+        .btn-action:hover { background-color: #f5f5f5; }
+        .btn-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #ffffff;
+            border: 1px solid #ccc;
+            padding: 6px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 15px;
+        }
+        .btn-icon:hover { background-color: #f5f5f5; }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 0 10px;
+            background-color: #ffffff;
+            margin-right: 15px;
+        }
+        .search-box input {
+            border: none;
+            padding: 8px 5px;
+            outline: none;
+            font-size: 13px;
+            width: 150px;
+        }
+        .search-box svg { fill: #666; }
+
+        .member-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 10px;
+            font-size: 14px;
         }
-        .school-table th, .school-table td {
-            border: 1px solid #ccc;
-            padding: 8px;
-            text-align: left;
-        }
-        .school-table input { width: 90%; border: none; outline: none; }
-        .textarea-box { width: 100%; height: 80px; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
-        .btn-save {
-            background-color: #008000;
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 5px;
-            cursor: pointer;
+        .member-table th {
             font-weight: bold;
-            display: block;
-            margin: 20px auto 0;
+            border-bottom: 2px solid #ddd;
+            padding: 12px 10px;
+            text-align: left;
+            color: #333;
         }
+        .member-table td {
+            border-bottom: 1px solid #eee;
+            padding: 10px;
+            vertical-align: middle;
+        }
+        .member-table tr:hover { background-color: #f9f9f9; }
+        .member-name { color: #0066cc; text-decoration: none; cursor: pointer; font-weight: bold; }
+        .member-name:hover { text-decoration: underline; }
+        
+        .avatar-box { width: 40px; height: 50px; background-color: #e0e0e0; border-radius: 4px; display: inline-block; }
+        
+        .role-badge { padding: 4px 10px; border-radius: 12px; color: #ffffff; font-size: 12px; font-weight: bold; display: inline-block; text-align: center; min-width: 50px; }
+        .role-admin { background-color: #1a73e8; } 
+        .role-member { background-color: #6c757d; } 
+
+        .modal-overlay {
+            display: none;
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #ffffff;
+            z-index: 100;
+            overflow-y: auto;
+            padding: 30px;
+            box-sizing: border-box;
+        }
+        .modal-overlay.show { display: block; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 20px; }
+        .modal-header h2 { margin: 0; font-size: 18px; }
+        .close-btn { background: none; border: none; font-size: 24px; cursor: pointer; color: #666; }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 180px 1fr;
+            align-items: center;
+            margin-bottom: 15px;
+            max-width: 800px;
+        }
+        .form-label { display: flex; align-items: center; font-size: 14px; font-weight: bold; justify-content: flex-end; padding-right: 20px; }
+        .badge-req { background-color: #666; color: #fff; font-size: 10px; padding: 2px 5px; border-radius: 3px; margin-left: 8px; font-weight: normal; }
+        .form-input input, .form-input select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 14px; }
+        .name-split { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        
+        .save-btn-area { max-width: 800px; text-align: center; margin-top: 30px; }
+        .btn-submit { background-color: #1a73e8; color: white; border: none; padding: 12px 40px; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 15px; }
+        .btn-submit:hover { background-color: #155cb0; }
     </style>
 </head>
-<body class="is-admin">
+<body>
 
     <div id="header-container"></div>
 
@@ -229,190 +175,145 @@
     </div>
 
     <div class="container">
-        
         <div class="main-content">
-            <div class="top-action-bar">
-                <button class="btn-create" onclick="openModal()">新規作成</button>
-            </div>
-
-            <div class="search-panel">
-                <div class="search-grid">
-                    <div class="input-group">
-                        <label>会員番号 (4桁)</label>
-                        <input type="text" maxlength="4" placeholder="例: 1234">
-                    </div>
-                    <div class="input-group">
-                        <label>氏名 (漢字/ふりがな)</label>
-                        <input type="text">
-                    </div>
-                    <div class="input-group">
-                        <label>性別</label>
-                        <select>
-                            <option value="">すべて</option>
-                            <option value="男性">男性</option>
-                            <option value="女性">女性</option>
-                            <option value="その他">その他</option>
-                        </select>
-                    </div>
-                    <div class="input-group">
-                        <label>学年</label>
-                        <select>
-                            <option value="">すべて</option>
-                            <option value="中1">中1</option>
-                            <option value="中2">中2</option>
-                            <option value="中3">中3</option>
-                            <option value="高1">高1</option>
-                            <option value="高2">高2</option>
-                            <option value="高3">高3</option>
-                            <option value="大1">大1</option>
-                            <option value="大2">大2</option>
-                            <option value="大3">大3</option>
-                            <option value="大4">大4</option>
-                        </select>
-                    </div>
-                    <div class="input-group">
-                        <label>学校名</label>
-                        <input type="text">
-                    </div>
-                </div>
-                <button class="btn-search">検索</button>
-            </div>
-
-            <div class="result-grid">
-                <div class="member-card">
-                    <div class="member-photo-area">
-                        <img src="../file/dummy.jpg" alt="">
-                    </div>
-                    <div class="member-info-area">
-                        <div class="info-top-row">
-                            <span class="member-id">1234</span>
-                            <span class="role-badge role-admin">役員</span>
-                        </div>
-                        <div class="name-kanji">山田 太郎</div>
-                        <div class="name-kana">やまだ たろう</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div id="sidebar-container"></div>
-
-    </div>
-
-    <div class="modal-overlay" id="createModal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal()">×</button>
-            <h2 class="modal-title">メンバー新規作成</h2>
             
-            <div class="form-layout">
-                <div class="form-left">
-                    <img id="previewImage" src="" alt="顔写真">
-                    <input type="file" id="imageUpload" accept="image/*">
+            <!-- アクションバー -->
+            <div class="action-bar">
+                <div class="action-check">
+                    <input type="checkbox"> <span>▼</span>
                 </div>
-                <div class="form-right">
-                    <div class="section-title">システムログイン情報</div>
-                    <div class="input-group">
-                        <label>ログインID (半角英数字)</label>
-                        <input type="text" id="newLoginId" placeholder="例: admin">
-                    </div>
-                    <div class="input-group">
-                        <label>パスワード (6文字以上)</label>
-                        <input type="text" id="newLoginPass">
-                    </div>
+                <button class="btn-action">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                    ごみ箱に移動
+                </button>
+                <button class="btn-icon">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"></path></svg>
+                </button>
+                <div class="search-box">
+                    <input type="text" placeholder="検索">
+                    <svg viewBox="0 0 24 24" width="16" height="16"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                </div>
+                <button class="btn-action" onclick="openModal()">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                    メンバーを追加
+                </button>
+            </div>
 
-                    <div class="section-title">基本情報</div>
-                    <div class="input-group">
-                        <label>会員番号 (半角数字)</label>
-                        <input type="number">
-                    </div>
-                    <div class="input-group">
-                        <label>権限</label>
-                        <select>
+            <!-- テーブル -->
+            <table class="member-table">
+                <thead>
+                    <tr>
+                        <th style="width: 30px;"></th>
+                        <th style="width: 60px;"></th>
+                        <th>氏名</th>
+                        <th>ふりがな</th>
+                        <th>役割</th>
+                        <th>ユーザーID</th>
+                        <th>入会年月日</th>
+                    </tr>
+                </thead>
+                <tbody id="memberListBody">
+                    <!-- データは自動でここに入ります -->
+                </tbody>
+            </table>
+
+            <!-- 新規作成・編集モーダル -->
+            <div class="modal-overlay" id="memberModal">
+                <div class="modal-header">
+                    <h2>メンバー登録・編集</h2>
+                    <button class="close-btn" onclick="closeModal()">×</button>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-label">会員番号 <span class="badge-req">必須</span></div>
+                    <div class="form-input"><input type="number" id="memNumber" placeholder="例: 1234"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-label">役割 <span class="badge-req">必須</span></div>
+                    <div class="form-input">
+                        <select id="memRole">
                             <option value="会員">会員</option>
                             <option value="役員">役員</option>
                         </select>
                     </div>
-                    <div class="input-group form-full-width">
-                        <label>役職</label>
-                        <input type="text">
-                    </div>
-                    <div class="input-group">
-                        <label>姓</label>
-                        <input type="text">
-                    </div>
-                    <div class="input-group">
-                        <label>名</label>
-                        <input type="text">
-                    </div>
-                    <div class="input-group">
-                        <label>せい</label>
-                        <input type="text">
-                    </div>
-                    <div class="input-group">
-                        <label>めい</label>
-                        <input type="text">
-                    </div>
-                    <div class="input-group">
-                        <label>性別</label>
-                        <select>
-                            <option value="男性">男性</option>
-                            <option value="女性">女性</option>
-                            <option value="その他">その他</option>
-                        </select>
-                    </div>
-                    <div class="input-group">
-                        <label>血液型</label>
-                        <input type="text">
-                    </div>
-                    <div class="input-group">
-                        <label>身長 (cm)</label>
-                        <input type="number">
-                    </div>
-                    <div class="input-group">
-                        <label>体重 (kg)</label>
-                        <input type="number">
-                    </div>
-                    <div class="input-group form-full-width">
-                        <label>生年月日</label>
-                        <input type="date">
-                    </div>
-                    <div class="input-group form-full-width">
-                        <label>住所</label>
-                        <input type="text">
-                    </div>
-                    <div class="input-group">
-                        <label>電話番号</label>
-                        <input type="tel">
-                    </div>
-                    <div class="input-group">
-                        <label>保護者氏名</label>
-                        <input type="text">
-                    </div>
-                    <div class="input-group form-full-width">
-                        <label>緊急連絡先</label>
-                        <input type="text">
+                </div>
+                <div class="form-row">
+                    <div class="form-label">氏名 <span class="badge-req">必須</span></div>
+                    <div class="form-input name-split">
+                        <input type="text" id="memLastName" placeholder="苗字">
+                        <input type="text" id="memFirstName" placeholder="名前">
                     </div>
                 </div>
+                <div class="form-row">
+                    <div class="form-label">ふりがな</div>
+                    <div class="form-input"><input type="text" id="memKana"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-label">ユーザーID <span class="badge-req">必須</span></div>
+                    <div class="form-input"><input type="text" id="memUserId"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-label">パスワード <span class="badge-req">必須</span></div>
+                    <div class="form-input"><input type="text" id="memPass"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-label">性別</div>
+                    <div class="form-input">
+                        <select id="memGender">
+                            <option value="">選択してください</option><option value="男性">男性</option><option value="女性">女性</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-label">血液型</div>
+                    <div class="form-input"><input type="text" id="memBlood"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-label">身長 (cm)</div>
+                    <div class="form-input"><input type="number" id="memHeight"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-label">体重 (kg)</div>
+                    <div class="form-input"><input type="number" id="memWeight"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-label">生年月日</div>
+                    <div class="form-input"><input type="date" id="memBirth"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-label">住所</div>
+                    <div class="form-input"><input type="text" id="memAddress"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-label">電話番号</div>
+                    <div class="form-input"><input type="tel" id="memPhone"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-label">保護者氏名</div>
+                    <div class="form-input"><input type="text" id="memParent"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-label">緊急連絡先</div>
+                    <div class="form-input"><input type="text" id="memEmergency"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-label">備考</div>
+                    <div class="form-input"><input type="text" id="memNote"></div>
+                </div>
+
+                <div class="save-btn-area">
+                    <button class="btn-submit" id="saveBtn">作成</button>
+                </div>
             </div>
-
-            <h3 style="margin-top:20px; font-size: 14px;">学歴</h3>
-            <table class="school-table">
-                <tr><th>種別 (幼稚園/小学校など)</th><th>学校名</th></tr>
-                <tr><td><input type="text"></td><td><input type="text"></td></tr>
-                <tr><td><input type="text"></td><td><input type="text"></td></tr>
-                <tr><td><input type="text"></td><td><input type="text"></td></tr>
-            </table>
-
-            <h3 style="margin-top:20px; font-size: 14px;">備考</h3>
-            <textarea class="textarea-box"></textarea>
-
-            <button class="btn-save">保存する</button>
+            
         </div>
+        <div id="sidebar-container"></div>
     </div>
 
     <script type="module">
-        import { auth, onAuthStateChanged, signOut } from "../js/firebase-config.js";
+        import { auth, onAuthStateChanged, signOut, db } from "../js/firebase-config.js";
         import { renderHeader, renderSidebar } from "../js/components.js";
+        import { collection, addDoc, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js";
 
         onAuthStateChanged(auth, (user) => {
             if (!user) {
@@ -420,50 +321,90 @@
             } else {
                 renderHeader();
                 renderSidebar();
+                loadMembers();
+                document.getElementById("logoutBtn").addEventListener("click", () => {
+                    signOut(auth).then(() => { window.location.href = "../login.html"; });
+                });
+            }
+        });
+
+        async function loadMembers() {
+            const tbody = document.getElementById("memberListBody");
+            tbody.innerHTML = "";
+            const querySnapshot = await getDocs(collection(db, "members"));
+            
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                const tr = document.createElement("tr");
+                const roleClass = data.role === "役員" ? "role-admin" : "role-member";
                 
-                const userRole = localStorage.getItem("userRole");
-                if (userRole === "会員") {
-                    document.body.classList.add("is-member");
-                    document.body.classList.remove("is-admin");
+                // 入会年月日のフォーマット処理（未設定の場合は空白）
+                let joinDate = "";
+                if(data.createdAt) {
+                    const d = data.createdAt.toDate();
+                    joinDate = `${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}`;
                 }
 
-                document.getElementById("logoutBtn").addEventListener("click", () => {
-                    signOut(auth).then(() => {
-                        localStorage.removeItem("userRole");
-                        window.location.href = "../login.html";
-                    });
+                tr.innerHTML = `
+                    <td><input type="checkbox"></td>
+                    <td><div class="avatar-box"></div></td>
+                    <td><a class="member-name" onclick="alert('編集中: ${data.lastName} ${data.firstName}')">${data.lastName || ''} ${data.firstName || ''}</a></td>
+                    <td>${data.kana || ''}</td>
+                    <td><span class="role-badge ${roleClass}">${data.role || '会員'}</span></td>
+                    <td>${data.loginId || ''}</td>
+                    <td>${joinDate}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        document.getElementById("saveBtn").addEventListener("click", async () => {
+            const loginId = document.getElementById("memUserId").value;
+            const pass = document.getElementById("memPass").value;
+            if(!loginId || !pass) { alert("ユーザーIDとパスワードは必須です。"); return; }
+            
+            try {
+                await addDoc(collection(db, "members"), {
+                    memberNumber: document.getElementById("memNumber").value,
+                    role: document.getElementById("memRole").value,
+                    lastName: document.getElementById("memLastName").value,
+                    firstName: document.getElementById("memFirstName").value,
+                    kana: document.getElementById("memKana").value,
+                    loginId: loginId,
+                    password: pass,
+                    gender: document.getElementById("memGender").value,
+                    blood: document.getElementById("memBlood").value,
+                    height: document.getElementById("memHeight").value,
+                    weight: document.getElementById("memWeight").value,
+                    birth: document.getElementById("memBirth").value,
+                    address: document.getElementById("memAddress").value,
+                    phone: document.getElementById("memPhone").value,
+                    parent: document.getElementById("memParent").value,
+                    emergency: document.getElementById("memEmergency").value,
+                    note: document.getElementById("memNote").value,
+                    createdAt: serverTimestamp()
                 });
+                alert("保存しました。");
+                closeModal();
+                loadMembers();
+            } catch (e) {
+                console.error("Error adding document: ", e);
+                alert("保存に失敗しました。");
             }
         });
     </script>
 
-    <script src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.1/dist/browser-image-compression.js"></script>
     <script>
         function openModal() {
-            document.getElementById('createModal').classList.add('show');
+            document.getElementById('memberModal').classList.add('show');
+            // 入力欄をリセット
+            const inputs = document.querySelectorAll('#memberModal input, #memberModal select');
+            inputs.forEach(input => input.value = '');
+            document.getElementById('memRole').value = '会員';
         }
         function closeModal() {
-            document.getElementById('createModal').classList.remove('show');
+            document.getElementById('memberModal').classList.remove('show');
         }
-        document.getElementById('imageUpload').addEventListener('change', async function(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            const options = {
-                maxSizeMB: 0.2,
-                maxWidthOrHeight: 800,
-                useWebWorker: true
-            };
-            try {
-                const compressedFile = await imageCompression(file, options);
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('previewImage').src = e.target.result;
-                };
-                reader.readAsDataURL(compressedFile);
-            } catch (error) {
-                console.error(error);
-            }
-        });
     </script>
 </body>
 </html>
