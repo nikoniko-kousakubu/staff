@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>メンバー | にこにこ工作部 ボランティアポータル</title>
+    
+    <link rel="icon" href="../file/icon.png">
+    <link rel="apple-touch-icon" href="../file/icon.png">
+    <link rel="icon" sizes="192x192" href="../file/icon.png">
+    <meta property="og:image" content="../file/icon.png">
+
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            background-color: #f2f2f2;
+        }
+        header {
+            flex-shrink: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 60px;
+            padding: 0 20px;
+            background-color: #ffffff;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .header-left img.icon { height: 40px; }
+        .header-left img.title { height: 30px; }
+        .header-right { position: relative; }
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 5px;
+        }
+        .user-profile:hover { background-color: #f5f5f5; }
+        .user-icon { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; }
+        .user-name { color: #000000; font-weight: bold; }
+        .role-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .role-admin { background-color: #800080; }
+        .role-member { background-color: #FFAA00; }
+        .dropdown-icon { font-size: 10px; color: #666; }
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 50px;
+            right: 0;
+            background-color: #ffffff;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            width: 150px;
+            z-index: 100;
+        }
+        .dropdown-menu.show { display: block; }
+        .dropdown-menu ul { list-style: none; padding: 0; margin: 0; }
+        .dropdown-menu li { padding: 12px 15px; font-size: 14px; cursor: pointer; border-bottom: 1px solid #eee; }
+        .dropdown-menu li:last-child { border-bottom: none; }
+        .dropdown-menu li:hover { background-color: #f9f9f9; }
+        .logout-text { color: #ff0000; font-weight: bold; }
+        .breadcrumb {
+            flex-shrink: 0;
+            padding: 10px 20px;
+            font-size: 13px;
+            color: #555;
+            background-color: #ffffff;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .breadcrumb a { color: #0066cc; text-decoration: none; }
+        .breadcrumb a:hover { text-decoration: underline; }
+        .container {
+            flex-grow: 1;
+            display: flex;
+            overflow: hidden;
+        }
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            background-color: #f9f9f9;
+            overflow-y: auto;
+        }
+        .sidebar {
+            width: 80px;
+            background-color: #ffffff;
+            border-left: 1px solid #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0 80px 0;
+            gap: 25px;
+            overflow-y: auto;
+        }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #333;
+            font-size: 11px;
+            cursor: pointer;
+        }
+        .nav-item:hover { opacity: 0.7; }
+        .nav-item img {
+            width: 36px;
+            height: 36px;
+            border-radius: 14px;
+            margin-bottom: 5px;
+            object-fit: cover;
+        }
+        .admin-only { display: flex; }
+        .is-member .admin-only { display: none !important; }
+        
+        .top-action-bar {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 15px;
+        }
+        .btn-create {
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .btn-create:hover { background-color: #0055aa; }
+
+        .search-panel {
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .search-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        .input-group { display: flex; flex-direction: column; gap: 5px; font-size: 14px; }
+        .input-group input, .input-group select {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .btn-search {
+            background-color: #333;
+            color: white;
+            border: none;
+            padding: 10px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        .member-card {
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 15px;
+            display: flex;
+            gap: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .member-photo-area img {
+            width: 90px;
+            aspect-ratio: 3 / 4;
+            object-fit: cover;
+            border-radius: 5px;
+            background-color: #eee;
+        }
+        .member-info-area {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 5px;
+        }
+        .info-top-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .member-id { font-size: 12px; color: #666; }
+        .name-kanji { font-size: 18px; font-weight: bold; color: #333; margin-top: 5px; }
+        .name-kana { font-size: 12px; color: #888; }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-overlay.show { display: flex; }
+        .modal-content {
+            background-color: #fff;
+            width: 80%;
+            max-width: 800px;
+            max-height: 90vh;
+            border-radius: 10px;
+            padding: 20px;
+            overflow-y: auto;
+            position: relative;
+        }
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+        .modal-title { margin-top: 0; margin-bottom: 20px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        .form-layout {
+            display: flex;
+            gap: 20px;
+        }
+        .form-left {
+            width: 150px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .form-left img {
+            width: 100%;
+            aspect-ratio: 3 / 4;
+            object-fit: cover;
+            border-radius: 5px;
+            background-color: #eee;
+        }
+        .form-left input[type="file"] { font-size: 12px; }
+        .form-right {
+            flex-grow: 1;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        .form-full-width { grid-column: span 2; }
+        .school-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        .school-table th, .school-table td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+        .school-table input { width: 90%; border: none; outline: none; }
+        .textarea-box { width: 100%; height: 80px; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        .btn-save {
+            background-color: #008000;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            display: block;
+            margin: 20px auto 0;
+        }
+    </style>
+</head>
+<body class="is-admin">
+
+    <header>
+        <div class="header-left">
+            <img src="../file/icon.png" alt="" class="icon">
+            <img src="../file/title.png" alt="" class="title">
+        </div>
+        <div class="header-right">
+            <div class="user-profile" onclick="toggleMenu()">
+                <img src="../file/icon.png" alt="" class="user-icon">
+                <span class="user-name">山田 太郎</span>
+                <span class="role-badge role-admin">役員</span>
+                <span class="dropdown-icon">▼</span>
+            </div>
+            <div class="dropdown-menu" id="dropdownMenu">
+                <ul>
+                    <li>アカウント情報</li>
+                    <li class="logout-text">ログアウト</li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <div class="breadcrumb">
+        <a href="../index.html">トップ</a>
+    </div>
+
+    <div class="container">
+        
+        <div class="main-content">
+            <div class="top-action-bar">
+                <button class="btn-create" onclick="openModal()">新規作成</button>
+            </div>
+
+            <div class="search-panel">
+                <div class="search-grid">
+                    <div class="input-group">
+                        <label>会員番号 (4桁)</label>
+                        <input type="text" maxlength="4" placeholder="例: 1234">
+                    </div>
+                    <div class="input-group">
+                        <label>氏名 (漢字/ふりがな)</label>
+                        <input type="text">
+                    </div>
+                    <div class="input-group">
+                        <label>性別</label>
+                        <select>
+                            <option value="">すべて</option>
+                            <option value="男性">男性</option>
+                            <option value="女性">女性</option>
+                            <option value="その他">その他</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>学年</label>
+                        <select>
+                            <option value="">すべて</option>
+                            <option value="中1">中1</option>
+                            <option value="中2">中2</option>
+                            <option value="中3">中3</option>
+                            <option value="高1">高1</option>
+                            <option value="高2">高2</option>
+                            <option value="高3">高3</option>
+                            <option value="大1">大1</option>
+                            <option value="大2">大2</option>
+                            <option value="大3">大3</option>
+                            <option value="大4">大4</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>学校名</label>
+                        <input type="text">
+                    </div>
+                </div>
+                <button class="btn-search">検索</button>
+            </div>
+
+            <div class="result-grid">
+                <div class="member-card">
+                    <div class="member-photo-area">
+                        <img src="../file/dummy.jpg" alt="">
+                    </div>
+                    <div class="member-info-area">
+                        <div class="info-top-row">
+                            <span class="member-id">1234</span>
+                            <span class="role-badge role-admin">役員</span>
+                        </div>
+                        <div class="name-kanji">山田 太郎</div>
+                        <div class="name-kana">やまだ たろう</div>
+                    </div>
+                </div>
+                <div class="member-card">
+                    <div class="member-photo-area">
+                        <img src="../file/dummy.jpg" alt="">
+                    </div>
+                    <div class="member-info-area">
+                        <div class="info-top-row">
+                            <span class="member-id">5678</span>
+                            <span class="role-badge role-member">会員</span>
+                        </div>
+                        <div class="name-kanji">佐藤 花子</div>
+                        <div class="name-kana">さとう はなこ</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="sidebar">
+            <a href="../index.html" class="nav-item">
+                <img src="../file/top.jpg" alt="">
+                <span>トップ</span>
+            </a>
+            <div class="nav-item">
+                <img src="../file/board.jpg" alt="">
+                <span>掲示板</span>
+            </div>
+            <div class="nav-item">
+                <img src="../file/calendar.jpg" alt="">
+                <span>カレンダー</span>
+            </div>
+            <div class="nav-item">
+                <img src="../file/meeting.jpg" alt="">
+                <span>会議</span>
+            </div>
+            <div class="nav-item">
+                <img src="../file/history.jpg" alt="">
+                <span>活動記録</span>
+            </div>
+            <div class="nav-item">
+                <img src="../file/materials.jpg" alt="">
+                <span>資料</span>
+            </div>
+            <div class="nav-item admin-only">
+                <img src="../file/members.jpg" alt="">
+                <span>メンバー</span>
+            </div>
+            <div class="nav-item admin-only">
+                <img src="../file/report.jpg" alt="">
+                <span>レポート</span>
+            </div>
+            <div class="nav-item">
+                <img src="../file/setting.jpg" alt="">
+                <span>設定</span>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="modal-overlay" id="createModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">×</button>
+            <h2 class="modal-title">メンバー新規作成</h2>
+            
+            <div class="form-layout">
+                <div class="form-left">
+                    <img id="previewImage" src="" alt="顔写真">
+                    <input type="file" id="imageUpload" accept="image/*">
+                </div>
+                <div class="form-right">
+                    <div class="input-group">
+                        <label>会員番号 (半角数字)</label>
+                        <input type="number">
+                    </div>
+                    <div class="input-group">
+                        <label>権限</label>
+                        <select>
+                            <option value="会員">会員</option>
+                            <option value="役員">役員</option>
+                        </select>
+                    </div>
+                    <div class="input-group form-full-width">
+                        <label>役職</label>
+                        <input type="text">
+                    </div>
+                    <div class="input-group">
+                        <label>姓</label>
+                        <input type="text">
+                    </div>
+                    <div class="input-group">
+                        <label>名</label>
+                        <input type="text">
+                    </div>
+                    <div class="input-group">
+                        <label>せい</label>
+                        <input type="text">
+                    </div>
+                    <div class="input-group">
+                        <label>めい</label>
+                        <input type="text">
+                    </div>
+                    <div class="input-group">
+                        <label>性別</label>
+                        <select>
+                            <option value="男性">男性</option>
+                            <option value="女性">女性</option>
+                            <option value="その他">その他</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>血液型</label>
+                        <input type="text">
+                    </div>
+                    <div class="input-group">
+                        <label>身長 (cm)</label>
+                        <input type="number">
+                    </div>
+                    <div class="input-group">
+                        <label>体重 (kg)</label>
+                        <input type="number">
+                    </div>
+                    <div class="input-group form-full-width">
+                        <label>生年月日</label>
+                        <input type="date">
+                    </div>
+                    <div class="input-group form-full-width">
+                        <label>住所</label>
+                        <input type="text">
+                    </div>
+                    <div class="input-group">
+                        <label>電話番号</label>
+                        <input type="tel">
+                    </div>
+                    <div class="input-group">
+                        <label>保護者氏名</label>
+                        <input type="text">
+                    </div>
+                    <div class="input-group form-full-width">
+                        <label>緊急連絡先</label>
+                        <input type="text">
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="margin-top:20px; font-size: 14px;">学歴</h3>
+            <table class="school-table">
+                <tr><th>種別 (幼稚園/小学校など)</th><th>学校名</th></tr>
+                <tr><td><input type="text"></td><td><input type="text"></td></tr>
+                <tr><td><input type="text"></td><td><input type="text"></td></tr>
+                <tr><td><input type="text"></td><td><input type="text"></td></tr>
+            </table>
+
+            <h3 style="margin-top:20px; font-size: 14px;">備考</h3>
+            <textarea class="textarea-box"></textarea>
+
+            <button class="btn-save">保存する</button>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-analytics.js";
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyB4QGqGiEYK0RinYuO7wRL5Y0dUbg3uC4o",
+            authDomain: "staff-d1c5e.firebaseapp.com",
+            projectId: "staff-d1c5e",
+            storageBucket: "staff-d1c5e.firebasestorage.app",
+            messagingSenderId: "426025479665",
+            appId: "1:426025479665:web:cdb38a5640036aff18a850",
+            measurementId: "G-DV9FLZSWVE"
+        };
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.1/dist/browser-image-compression.js"></script>
+    <script>
+        function toggleMenu() {
+            document.getElementById('dropdownMenu').classList.toggle('show');
+        }
+        window.onclick = function(event) {
+            if (!event.target.closest('.header-right')) {
+                const menu = document.getElementById('dropdownMenu');
+                if (menu.classList.contains('show')) {
+                    menu.classList.remove('show');
+                }
+            }
+        }
+        function openModal() {
+            document.getElementById('createModal').classList.add('show');
+        }
+        function closeModal() {
+            document.getElementById('createModal').classList.remove('show');
+        }
+        document.getElementById('imageUpload').addEventListener('change', async function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const options = {
+                maxSizeMB: 0.2,
+                maxWidthOrHeight: 800,
+                useWebWorker: true
+            };
+            try {
+                const compressedFile = await imageCompression(file, options);
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('previewImage').src = e.target.result;
+                };
+                reader.readAsDataURL(compressedFile);
+            } catch (error) {
+                console.error(error);
+            }
+        });
+    </script>
+</body>
+</html>
