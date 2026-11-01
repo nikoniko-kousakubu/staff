@@ -55,11 +55,15 @@
             width: 100%;
             border-collapse: collapse;
             text-align: center;
+            margin-top: 10px;
         }
         .calendar-table th { padding: 10px 5px; color: #666; font-size: 13px; border-bottom: 1px solid #eee; }
-        .calendar-table td { padding: 12px 5px; font-size: 15px; color: #333; }
+        .calendar-table td { padding: 10px 5px; font-size: 15px; color: #333; cursor: pointer; }
+        .calendar-table td:hover { background-color: #f5f5f5; border-radius: 5px; }
         .calendar-table td span { display: inline-block; width: 30px; height: 30px; line-height: 30px; border-radius: 50%; }
         .calendar-table td span.today { background-color: #FFAA00; color: #ffffff; font-weight: bold; }
+        .nav-btn { border: none; background: none; font-size: 20px; cursor: pointer; color: #000000; font-weight: bold; padding: 0 10px; }
+        .nav-btn:hover { color: #555; }
     </style>
 </head>
 <body>
@@ -81,15 +85,19 @@
             </div>
             
             <div class="dashboard-panel">
-                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 15px;">
-                    <button style="border: none; background: none; font-size: 20px; cursor: pointer;">&lt;</button>
-                    <h2>11月</h2>
-                    <button style="border: none; background: none; font-size: 20px; cursor: pointer;">&gt;</button>
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eee; padding-bottom: 10px;">
+                    <button class="nav-btn" id="prevMonth">&lt;</button>
+                    <h2 id="calendar-title"></h2>
+                    <button class="nav-btn" id="nextMonth">&gt;</button>
                 </div>
                 <table class="calendar-table">
-                    <tr><th>日</th><th>月</th><th>火</th><th>水</th><th>木</th><th>金</th><th>土</th></tr>
-                    <tr><td><span>1</span></td><td><span>2</span></td><td><span>3</span></td><td><span>4</span></td><td><span>5</span></td><td><span>6</span></td><td><span>7</span></td></tr>
-                    <tr><td><span>8</span></td><td><span>9</span></td><td><span>10</span></td><td><span class="today">11</span></td><td><span>12</span></td><td><span>13</span></td><td><span>14</span></td></tr>
+                    <thead>
+                        <tr>
+                            <th style="color:red;">日</th><th>月</th><th>火</th><th>水</th><th>木</th><th>金</th><th style="color:blue;">土</th>
+                        </tr>
+                    </thead>
+                    <tbody id="calendar-body">
+                    </tbody>
                 </table>
             </div>
         </div>
@@ -108,7 +116,6 @@
             } else {
                 renderHeader();
                 renderSidebar();
-
                 document.getElementById("logoutBtn").addEventListener("click", () => {
                     signOut(auth).then(() => {
                         window.location.href = "login.html";
@@ -116,6 +123,67 @@
                 });
             }
         });
+    </script>
+
+    <script>
+        const date = new Date();
+        let currentYear = date.getFullYear();
+        let currentMonth = date.getMonth();
+
+        function renderCalendar(year, month) {
+            const title = document.getElementById('calendar-title');
+            const body = document.getElementById('calendar-body');
+            body.innerHTML = '';
+            title.textContent = `${year}年 ${month + 1}月`;
+
+            const firstDay = new Date(year, month, 1).getDay();
+            const lastDate = new Date(year, month + 1, 0).getDate();
+            const today = new Date();
+
+            let row = document.createElement('tr');
+            for (let i = 0; i < firstDay; i++) {
+                const cell = document.createElement('td');
+                row.appendChild(cell);
+            }
+
+            for (let i = 1; i <= lastDate; i++) {
+                if (row.children.length === 7) {
+                    body.appendChild(row);
+                    row = document.createElement('tr');
+                }
+                const cell = document.createElement('td');
+                const span = document.createElement('span');
+                span.textContent = i;
+
+                if (year === today.getFullYear() && month === today.getMonth() && i === today.getDate()) {
+                    span.classList.add('today');
+                }
+
+                cell.appendChild(span);
+                row.appendChild(cell);
+            }
+            if (row.children.length > 0) {
+                while (row.children.length < 7) {
+                    const cell = document.createElement('td');
+                    row.appendChild(cell);
+                }
+                body.appendChild(row);
+            }
+        }
+
+        document.getElementById('prevMonth').addEventListener('click', () => {
+            currentMonth--;
+            if (currentMonth < 0) { currentMonth = 11; currentYear--; }
+            renderCalendar(currentYear, currentMonth);
+        });
+
+        document.getElementById('nextMonth').addEventListener('click', () => {
+            currentMonth++;
+            if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+            renderCalendar(currentYear, currentMonth);
+        });
+
+        renderCalendar(currentYear, currentMonth);
     </script>
 </body>
 </html>
