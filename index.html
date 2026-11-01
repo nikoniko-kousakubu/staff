@@ -5,12 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
     <title>にこにこ工作部 ボランティアポータル</title>
-    
     <link rel="icon" href="file/icon.png">
     <link rel="apple-touch-icon" href="file/icon.png">
-    <link rel="icon" sizes="192x192" href="file/icon.png">
-    <meta property="og:image" content="file/icon.png">
-
+    
     <style>
         body, html {
             margin: 0;
@@ -22,73 +19,6 @@
             flex-direction: column;
             background-color: #f2f2f2;
         }
-        
-        header {
-            flex-shrink: 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 60px;
-            padding: 0 20px;
-            background-color: #ffffff;
-            border-bottom: 1px solid #e0e0e0;
-        }
-
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .header-left img.icon { height: 40px; }
-        .header-left img.title { height: 30px; }
-
-        .header-right { position: relative; }
-
-        .user-profile {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            padding: 5px;
-            border-radius: 5px;
-        }
-        .user-profile:hover { background-color: #f5f5f5; }
-        
-        .user-icon { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; }
-        .user-name { color: #000000; font-weight: bold; }
-        
-        .role-badge {
-            padding: 4px 8px;
-            border-radius: 12px;
-            color: #ffffff;
-            font-size: 12px;
-            font-weight: bold;
-        }
-        .role-admin { background-color: #800080; }
-        .role-member { background-color: #008000; }
-
-        .dropdown-icon { font-size: 10px; color: #666; }
-
-        .dropdown-menu {
-            display: none;
-            position: absolute;
-            top: 50px;
-            right: 0;
-            background-color: #ffffff;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            width: 150px;
-            z-index: 100;
-        }
-        .dropdown-menu.show { display: block; }
-        .dropdown-menu ul { list-style: none; padding: 0; margin: 0; }
-        .dropdown-menu li { padding: 12px 15px; font-size: 14px; cursor: pointer; border-bottom: 1px solid #eee; }
-        .dropdown-menu li:last-child { border-bottom: none; }
-        .dropdown-menu li:hover { background-color: #f9f9f9; }
-        
-        .logout-text { color: #ff0000; font-weight: bold; }
-
         .breadcrumb {
             flex-shrink: 0;
             padding: 10px 20px;
@@ -97,20 +27,11 @@
             background-color: #ffffff;
             border-bottom: 1px solid #e0e0e0;
         }
-        .breadcrumb a {
-            color: #0066cc;
-            text-decoration: none;
-        }
-        .breadcrumb a:hover {
-            text-decoration: underline;
-        }
-
         .container {
             flex-grow: 1;
             display: flex;
             overflow: hidden;
         }
-
         .main-content {
             flex-grow: 1;
             display: flex;
@@ -121,7 +42,6 @@
             overflow-y: auto;
             align-items: flex-start;
         }
-
         .dashboard-panel {
             background-color: #ffffff;
             border-radius: 10px;
@@ -130,185 +50,72 @@
             flex: 1;
             min-height: 400px;
         }
-        .dashboard-panel h2 { margin-top: 0; font-size: 18px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
-
-        .sidebar {
-            width: 80px;
-            background-color: #ffffff;
-            border-left: 1px solid #e0e0e0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px 0 80px 0;
-            gap: 25px;
-            overflow-y: auto;
-        }
-
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-decoration: none;
-            color: #333;
-            font-size: 11px;
-            cursor: pointer;
-        }
-        .nav-item:hover { opacity: 0.7; }
-        .nav-item img {
-            width: 36px;
-            height: 36px;
-            border-radius: 14px;
-            margin-bottom: 5px;
-            object-fit: cover;
-        }
-
+        .dashboard-panel h2 { margin: 0; font-size: 18px; border: none; padding: 0; }
         .calendar-table {
             width: 100%;
             border-collapse: collapse;
             text-align: center;
         }
-        .calendar-table th {
-            padding: 10px 5px;
-            color: #666;
-            font-size: 13px;
-            border-bottom: 1px solid #eee;
-        }
-        .calendar-table td {
-            padding: 12px 5px;
-            font-size: 15px;
-            color: #333;
-        }
-        .calendar-table td span {
-            display: inline-block;
-            width: 30px;
-            height: 30px;
-            line-height: 30px;
-            border-radius: 50%;
-        }
-        .calendar-table td span.today {
-            background-color: #800080;
-            color: #ffffff;
-            font-weight: bold;
-        }
+        .calendar-table th { padding: 10px 5px; color: #666; font-size: 13px; border-bottom: 1px solid #eee; }
+        .calendar-table td { padding: 12px 5px; font-size: 15px; color: #333; }
+        .calendar-table td span { display: inline-block; width: 30px; height: 30px; line-height: 30px; border-radius: 50%; }
+        .calendar-table td span.today { background-color: #FFAA00; color: #ffffff; font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="header-left">
-            <img src="file/icon.png" alt="" class="icon">
-            <img src="file/title.png" alt="" class="title">
-        </div>
-        
-        <div class="header-right">
-            <div class="user-profile" onclick="toggleMenu()">
-                <img src="file/icon.png" alt="" class="user-icon">
-                <span class="user-name">山田 太郎</span>
-                <span class="role-badge role-admin">役員</span>
-                <span class="dropdown-icon">▼</span>
-            </div>
-
-            <div class="dropdown-menu" id="dropdownMenu">
-                <ul>
-                    <li>アカウント情報</li>
-                    <li class="logout-text">ログアウト</li>
-                </ul>
-            </div>
-        </div>
-    </header>
+    <div id="header-container"></div>
 
     <div class="breadcrumb">
-        <a href="#">トップ</a> > 掲示板
+        トップ
     </div>
 
     <div class="container">
         
         <div class="main-content">
             <div class="dashboard-panel">
-                <h2>掲示板</h2>
+                <div style="border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 15px;">
+                    <h2>掲示板</h2>
+                </div>
                 <p>ここにお知らせが並びます。</p>
             </div>
             
             <div class="dashboard-panel">
-                <h2>カレンダー</h2>
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 15px;">
+                    <button style="border: none; background: none; font-size: 20px; cursor: pointer;">&lt;</button>
+                    <h2>11月</h2>
+                    <button style="border: none; background: none; font-size: 20px; cursor: pointer;">&gt;</button>
+                </div>
                 <table class="calendar-table">
-                    <tr>
-                        <th>日</th><th>月</th><th>火</th><th>水</th><th>木</th><th>金</th><th>土</th>
-                    </tr>
-                    <tr>
-                        <td><span>1</span></td><td><span>2</span></td><td><span>3</span></td><td><span>4</span></td><td><span>5</span></td><td><span>6</span></td><td><span>7</span></td>
-                    </tr>
-                    <tr>
-                        <td><span>8</span></td><td><span>9</span></td><td><span>10</span></td><td><span class="today">11</span></td><td><span>12</span></td><td><span>13</span></td><td><span>14</span></td>
-                    </tr>
-                    <tr>
-                        <td><span>15</span></td><td><span>16</span></td><td><span>17</span></td><td><span>18</span></td><td><span>19</span></td><td><span>20</span></td><td><span>21</span></td>
-                    </tr>
-                    <tr>
-                        <td><span>22</span></td><td><span>23</span></td><td><span>24</span></td><td><span>25</span></td><td><span>26</span></td><td><span>27</span></td><td><span>28</span></td>
-                    </tr>
-                    <tr>
-                        <td><span>29</span></td><td><span>30</span></td><td><span></span></td><td><span></span></td><td><span></span></td><td><span></span></td><td><span></span></td>
-                    </tr>
+                    <tr><th>日</th><th>月</th><th>火</th><th>水</th><th>木</th><th>金</th><th>土</th></tr>
+                    <tr><td><span>1</span></td><td><span>2</span></td><td><span>3</span></td><td><span>4</span></td><td><span>5</span></td><td><span>6</span></td><td><span>7</span></td></tr>
+                    <tr><td><span>8</span></td><td><span>9</span></td><td><span>10</span></td><td><span class="today">11</span></td><td><span>12</span></td><td><span>13</span></td><td><span>14</span></td></tr>
                 </table>
             </div>
         </div>
 
-        <div class="sidebar">
-            <div class="nav-item">
-                <img src="file/top.jpg" alt="">
-                <span>トップ</span>
-            </div>
-            <div class="nav-item">
-                <img src="file/board.jpg" alt="">
-                <span>掲示板</span>
-            </div>
-            <div class="nav-item">
-                <img src="file/calendar.jpg" alt="">
-                <span>カレンダー</span>
-            </div>
-            <div class="nav-item">
-                <img src="file/meeting.jpg" alt="">
-                <span>会議</span>
-            </div>
-            <div class="nav-item">
-                <img src="file/history.jpg" alt="">
-                <span>活動記録</span>
-            </div>
-            <div class="nav-item">
-                <img src="file/materials.jpg" alt="">
-                <span>資料</span>
-            </div>
-            <div class="nav-item">
-                <img src="file/members.jpg" alt="">
-                <span>メンバー</span>
-            </div>
-            <div class="nav-item">
-                <img src="file/report.jpg" alt="">
-                <span>レポート</span>
-            </div>
-            <div class="nav-item">
-                <img src="file/setting.jpg" alt="">
-                <span>設定</span>
-            </div>
-        </div>
+        <div id="sidebar-container"></div>
 
     </div>
 
-    <script>
-        function toggleMenu() {
-            const menu = document.getElementById('dropdownMenu');
-            menu.classList.toggle('show');
-        }
+    <script type="module">
+        import { auth, onAuthStateChanged, signOut } from "./js/firebase-config.js";
+        import { renderHeader, renderSidebar } from "./js/components.js";
 
-        window.onclick = function(event) {
-            if (!event.target.closest('.header-right')) {
-                const menu = document.getElementById('dropdownMenu');
-                if (menu.classList.contains('show')) {
-                    menu.classList.remove('show');
-                }
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.href = "login.html";
+            } else {
+                renderHeader();
+                renderSidebar();
+
+                document.getElementById("logoutBtn").addEventListener("click", () => {
+                    signOut(auth).then(() => {
+                        window.location.href = "login.html";
+                    });
+                });
             }
-        }
+        });
     </script>
 </body>
 </html>
