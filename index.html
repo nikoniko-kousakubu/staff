@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 検索避け -->
+    <meta name="robots" content="noindex, nofollow">
+
+    <title>ボランティア団体ポータル</title>
+
+    <!-- 各種アイコン設定（すべて file/icon.png に統一） -->
+    <link rel="icon" href="file/icon.png"> <!-- ブラウザタブのファビコン -->
+    <link rel="apple-touch-icon" href="file/icon.png"> <!-- iOSホーム画面追加用 -->
+    <link rel="icon" sizes="192x192" href="file/icon.png"> <!-- Androidホーム画面追加用 -->
+    <meta property="og:image" content="file/icon.png"> <!-- URL送信時のプレビュー画像 -->
+
+    <style>
+        /* 全体のリセットと基本設定 */
+        body, html { margin: 0; padding: 0; font-family: sans-serif; height: 100vh; overflow: hidden; }
+        
+        /* ヘッダーのレイアウト */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 60px;
+            padding: 0 20px;
+            background-color: #ffffff;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .header-left img.icon { height: 40px; }
+        .header-left img.title { height: 30px; }
+
+        .header-right { position: relative; }
+
+        /* ユーザー情報の表示エリア */
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 5px;
+        }
+        .user-profile:hover { background-color: #f5f5f5; }
+        
+        .user-icon { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; }
+        .user-name { color: #000000; font-weight: bold; }
+        
+        /* 役職バッジ（角丸、白文字） */
+        .role-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .role-admin { background-color: #800080; } /* 役員（紫） */
+        .role-member { background-color: #008000; } /* 会員（緑） */
+
+        .dropdown-icon { font-size: 10px; color: #666; }
+
+        /* ドロップダウンメニュー（初期状態は非表示） */
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 50px;
+            right: 0;
+            background-color: #ffffff;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            width: 150px;
+            z-index: 100;
+        }
+        .dropdown-menu.show { display: block; }
+        .dropdown-menu ul { list-style: none; padding: 0; margin: 0; }
+        .dropdown-menu li { padding: 12px 15px; font-size: 14px; cursor: pointer; border-bottom: 1px solid #eee; }
+        .dropdown-menu li:last-child { border-bottom: none; }
+        .dropdown-menu li:hover { background-color: #f9f9f9; }
+        
+        .logout-text { color: #ff0000; font-weight: bold; }
+
+        /* メインコンテンツと右サイドバーのレイアウト */
+        .container {
+            display: flex;
+            height: calc(100vh - 60px); /* ヘッダーの高さを引いた残り全部 */
+        }
+
+        /* 左側：基本機能を見るメインエリア */
+        .main-content {
+            flex-grow: 1; /* 残りの横幅をすべて使う */
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            gap: 20px;
+            background-color: #f9f9f9;
+            overflow-y: auto;
+        }
+
+        .dashboard-panel {
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            flex: 1; /* 縦幅を均等に分ける */
+            display: flex;
+            flex-direction: column;
+        }
+        .dashboard-panel h2 { margin-top: 0; font-size: 18px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+
+        /* 右側：ナビゲーションアイコンが並ぶ狭いエリア */
+        .sidebar {
+            width: 80px; /* だいぶ狭い幅 */
+            background-color: #ffffff;
+            border-left: 1px solid #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0;
+            gap: 25px; /* アイコン同士の間隔 */
+            overflow-y: auto;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #333;
+            font-size: 11px;
+            cursor: pointer;
+        }
+        .nav-item:hover { opacity: 0.7; }
+        .nav-item img {
+            width: 32px;
+            height: 32px;
+            margin-bottom: 5px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ヘッダー -->
+    <header>
+        <div class="header-left">
+            <img src="file/icon.png" alt="アイコン" class="icon">
+            <img src="file/title.png" alt="タイトル" class="title">
+        </div>
+        
+        <div class="header-right">
+            <!-- 名前と役職のエリア（クリックでメニュー表示） -->
+            <div class="user-profile" onclick="toggleMenu()">
+                <img src="file/icon.png" alt="ユーザーアイコン" class="user-icon">
+                <span class="user-name">山田 太郎</span>
+                
+                <!-- 役員の場合は role-admin を、会員の場合は role-member をクラスに設定します -->
+                <span class="role-badge role-admin">役員</span>
+                
+                <span class="dropdown-icon">▼</span>
+            </div>
+
+            <!-- ドロップダウンメニュー -->
+            <div class="dropdown-menu" id="dropdownMenu">
+                <ul>
+                    <li>アカウント情報</li>
+                    <li class="logout-text">ログアウト</li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <!-- メインレイアウト -->
+    <div class="container">
+        
+        <!-- 左側（メインエリア）：上に掲示板、下にカレンダー -->
+        <div class="main-content">
+            <div class="dashboard-panel">
+                <h2>掲示板</h2>
+                <p>ここにお知らせが並びます。</p>
+            </div>
+            
+            <div class="dashboard-panel">
+                <h2>カレンダー</h2>
+                <p>ここに活動予定が表示されます。</p>
+            </div>
+        </div>
+
+        <!-- 右側（サイドバー）：縦一列に機能アイコン -->
+        <div class="sidebar">
+            <div class="nav-item">
+                <img src="file/top.jpg" alt="トップ">
+                <span>トップ</span>
+            </div>
+            <div class="nav-item">
+                <img src="file/board.jpg" alt="掲示板">
+                <span>掲示板</span>
+            </div>
+            <div class="nav-item">
+                <img src="file/calendar.jpg" alt="カレンダー">
+                <span>カレンダー</span>
+            </div>
+            <div class="nav-item">
+                <img src="file/meeting.jpg" alt="会議">
+                <span>会議</span>
+            </div>
+            <div class="nav-item">
+                <img src="file/history.jpg" alt="活動記録">
+                <span>活動記録</span>
+            </div>
+            <div class="nav-item">
+                <img src="file/materials.jpg" alt="資料">
+                <span>資料</span>
+            </div>
+            <div class="nav-item">
+                <img src="file/members.jpg" alt="メンバー">
+                <span>メンバー</span>
+            </div>
+            <div class="nav-item">
+                <img src="file/report.jpg" alt="レポート">
+                <span>レポート</span>
+            </div>
+            <div class="nav-item">
+                <img src="file/setting.jpg" alt="設定">
+                <span>設定</span>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- メニュー開閉用の簡単なプログラム -->
+    <script>
+        function toggleMenu() {
+            const menu = document.getElementById('dropdownMenu');
+            // showクラスを付け外しすることで表示・非表示を切り替え
+            menu.classList.toggle('show');
+        }
+
+        // メニューの外側をクリックした時にメニューを閉じる処理
+        window.onclick = function(event) {
+            if (!event.target.closest('.header-right')) {
+                const menu = document.getElementById('dropdownMenu');
+                if (menu.classList.contains('show')) {
+                    menu.classList.remove('show');
+                }
+            }
+        }
+    </script>
+</body>
+</html>
