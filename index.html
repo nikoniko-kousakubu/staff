@@ -3,23 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- 検索避け -->
     <meta name="robots" content="noindex, nofollow">
-
-    <title>ボランティア団体ポータル</title>
-
-    <!-- 各種アイコン設定（すべて file/icon.png に統一） -->
-    <link rel="icon" href="file/icon.png"> <!-- ブラウザタブのファビコン -->
-    <link rel="apple-touch-icon" href="file/icon.png"> <!-- iOSホーム画面追加用 -->
-    <link rel="icon" sizes="192x192" href="file/icon.png"> <!-- Androidホーム画面追加用 -->
-    <meta property="og:image" content="file/icon.png"> <!-- URL送信時のプレビュー画像 -->
+    <title>にこにこ工作部 ボランティアポータル</title>
+    
+    <link rel="icon" href="file/icon.png">
+    <link rel="apple-touch-icon" href="file/icon.png">
+    <link rel="icon" sizes="192x192" href="file/icon.png">
+    <meta property="og:image" content="file/icon.png">
 
     <style>
-        /* 全体のリセットと基本設定 */
-        body, html { margin: 0; padding: 0; font-family: sans-serif; height: 100vh; overflow: hidden; }
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            background-color: #f2f2f2;
+        }
         
-        /* ヘッダーのレイアウト */
         header {
+            flex-shrink: 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -39,7 +44,6 @@
 
         .header-right { position: relative; }
 
-        /* ユーザー情報の表示エリア */
         .user-profile {
             display: flex;
             align-items: center;
@@ -53,7 +57,6 @@
         .user-icon { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; }
         .user-name { color: #000000; font-weight: bold; }
         
-        /* 役職バッジ（角丸、白文字） */
         .role-badge {
             padding: 4px 8px;
             border-radius: 12px;
@@ -61,12 +64,11 @@
             font-size: 12px;
             font-weight: bold;
         }
-        .role-admin { background-color: #800080; } /* 役員（紫） */
-        .role-member { background-color: #008000; } /* 会員（緑） */
+        .role-admin { background-color: #800080; }
+        .role-member { background-color: #008000; }
 
         .dropdown-icon { font-size: 10px; color: #666; }
 
-        /* ドロップダウンメニュー（初期状態は非表示） */
         .dropdown-menu {
             display: none;
             position: absolute;
@@ -87,21 +89,37 @@
         
         .logout-text { color: #ff0000; font-weight: bold; }
 
-        /* メインコンテンツと右サイドバーのレイアウト */
-        .container {
-            display: flex;
-            height: calc(100vh - 60px); /* ヘッダーの高さを引いた残り全部 */
+        .breadcrumb {
+            flex-shrink: 0;
+            padding: 10px 20px;
+            font-size: 13px;
+            color: #555;
+            background-color: #ffffff;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .breadcrumb a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+        .breadcrumb a:hover {
+            text-decoration: underline;
         }
 
-        /* 左側：基本機能を見るメインエリア */
-        .main-content {
-            flex-grow: 1; /* 残りの横幅をすべて使う */
+        .container {
+            flex-grow: 1;
             display: flex;
-            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: row;
             padding: 20px;
             gap: 20px;
             background-color: #f9f9f9;
             overflow-y: auto;
+            align-items: flex-start;
         }
 
         .dashboard-panel {
@@ -109,22 +127,20 @@
             border-radius: 10px;
             padding: 20px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            flex: 1; /* 縦幅を均等に分ける */
-            display: flex;
-            flex-direction: column;
+            flex: 1;
+            min-height: 400px;
         }
         .dashboard-panel h2 { margin-top: 0; font-size: 18px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
 
-        /* 右側：ナビゲーションアイコンが並ぶ狭いエリア */
         .sidebar {
-            width: 80px; /* だいぶ狭い幅 */
+            width: 80px;
             background-color: #ffffff;
             border-left: 1px solid #e0e0e0;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px 0;
-            gap: 25px; /* アイコン同士の間隔 */
+            padding: 20px 0 80px 0;
+            gap: 25px;
             overflow-y: auto;
         }
 
@@ -139,35 +155,59 @@
         }
         .nav-item:hover { opacity: 0.7; }
         .nav-item img {
-            width: 32px;
-            height: 32px;
+            width: 36px;
+            height: 36px;
+            border-radius: 14px;
             margin-bottom: 5px;
             object-fit: cover;
+        }
+
+        .calendar-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+        }
+        .calendar-table th {
+            padding: 10px 5px;
+            color: #666;
+            font-size: 13px;
+            border-bottom: 1px solid #eee;
+        }
+        .calendar-table td {
+            padding: 12px 5px;
+            font-size: 15px;
+            color: #333;
+        }
+        .calendar-table td span {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+            border-radius: 50%;
+        }
+        .calendar-table td span.today {
+            background-color: #800080;
+            color: #ffffff;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
 
-    <!-- ヘッダー -->
     <header>
         <div class="header-left">
-            <img src="file/icon.png" alt="アイコン" class="icon">
-            <img src="file/title.png" alt="タイトル" class="title">
+            <img src="file/icon.png" alt="" class="icon">
+            <img src="file/title.png" alt="" class="title">
         </div>
         
         <div class="header-right">
-            <!-- 名前と役職のエリア（クリックでメニュー表示） -->
             <div class="user-profile" onclick="toggleMenu()">
-                <img src="file/icon.png" alt="ユーザーアイコン" class="user-icon">
+                <img src="file/icon.png" alt="" class="user-icon">
                 <span class="user-name">山田 太郎</span>
-                
-                <!-- 役員の場合は role-admin を、会員の場合は role-member をクラスに設定します -->
                 <span class="role-badge role-admin">役員</span>
-                
                 <span class="dropdown-icon">▼</span>
             </div>
 
-            <!-- ドロップダウンメニュー -->
             <div class="dropdown-menu" id="dropdownMenu">
                 <ul>
                     <li>アカウント情報</li>
@@ -177,10 +217,12 @@
         </div>
     </header>
 
-    <!-- メインレイアウト -->
+    <div class="breadcrumb">
+        <a href="#">トップ</a> > 掲示板
+    </div>
+
     <div class="container">
         
-        <!-- 左側（メインエリア）：上に掲示板、下にカレンダー -->
         <div class="main-content">
             <div class="dashboard-panel">
                 <h2>掲示板</h2>
@@ -189,61 +231,76 @@
             
             <div class="dashboard-panel">
                 <h2>カレンダー</h2>
-                <p>ここに活動予定が表示されます。</p>
+                <table class="calendar-table">
+                    <tr>
+                        <th>日</th><th>月</th><th>火</th><th>水</th><th>木</th><th>金</th><th>土</th>
+                    </tr>
+                    <tr>
+                        <td><span>1</span></td><td><span>2</span></td><td><span>3</span></td><td><span>4</span></td><td><span>5</span></td><td><span>6</span></td><td><span>7</span></td>
+                    </tr>
+                    <tr>
+                        <td><span>8</span></td><td><span>9</span></td><td><span>10</span></td><td><span class="today">11</span></td><td><span>12</span></td><td><span>13</span></td><td><span>14</span></td>
+                    </tr>
+                    <tr>
+                        <td><span>15</span></td><td><span>16</span></td><td><span>17</span></td><td><span>18</span></td><td><span>19</span></td><td><span>20</span></td><td><span>21</span></td>
+                    </tr>
+                    <tr>
+                        <td><span>22</span></td><td><span>23</span></td><td><span>24</span></td><td><span>25</span></td><td><span>26</span></td><td><span>27</span></td><td><span>28</span></td>
+                    </tr>
+                    <tr>
+                        <td><span>29</span></td><td><span>30</span></td><td><span></span></td><td><span></span></td><td><span></span></td><td><span></span></td><td><span></span></td>
+                    </tr>
+                </table>
             </div>
         </div>
 
-        <!-- 右側（サイドバー）：縦一列に機能アイコン -->
         <div class="sidebar">
             <div class="nav-item">
-                <img src="file/top.jpg" alt="トップ">
+                <img src="file/top.jpg" alt="">
                 <span>トップ</span>
             </div>
             <div class="nav-item">
-                <img src="file/board.jpg" alt="掲示板">
+                <img src="file/board.jpg" alt="">
                 <span>掲示板</span>
             </div>
             <div class="nav-item">
-                <img src="file/calendar.jpg" alt="カレンダー">
+                <img src="file/calendar.jpg" alt="">
                 <span>カレンダー</span>
             </div>
             <div class="nav-item">
-                <img src="file/meeting.jpg" alt="会議">
+                <img src="file/meeting.jpg" alt="">
                 <span>会議</span>
             </div>
             <div class="nav-item">
-                <img src="file/history.jpg" alt="活動記録">
+                <img src="file/history.jpg" alt="">
                 <span>活動記録</span>
             </div>
             <div class="nav-item">
-                <img src="file/materials.jpg" alt="資料">
+                <img src="file/materials.jpg" alt="">
                 <span>資料</span>
             </div>
             <div class="nav-item">
-                <img src="file/members.jpg" alt="メンバー">
+                <img src="file/members.jpg" alt="">
                 <span>メンバー</span>
             </div>
             <div class="nav-item">
-                <img src="file/report.jpg" alt="レポート">
+                <img src="file/report.jpg" alt="">
                 <span>レポート</span>
             </div>
             <div class="nav-item">
-                <img src="file/setting.jpg" alt="設定">
+                <img src="file/setting.jpg" alt="">
                 <span>設定</span>
             </div>
         </div>
 
     </div>
 
-    <!-- メニュー開閉用の簡単なプログラム -->
     <script>
         function toggleMenu() {
             const menu = document.getElementById('dropdownMenu');
-            // showクラスを付け外しすることで表示・非表示を切り替え
             menu.classList.toggle('show');
         }
 
-        // メニューの外側をクリックした時にメニューを閉じる処理
         window.onclick = function(event) {
             if (!event.target.closest('.header-right')) {
                 const menu = document.getElementById('dropdownMenu');
