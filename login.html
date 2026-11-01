@@ -89,7 +89,7 @@
         
         <div class="input-group">
             <label>ログインID</label>
-            <input type="text" id="loginId" placeholder="例: 1234">
+            <input type="text" id="loginId" placeholder="例: admin">
         </div>
         
         <div class="input-group">
@@ -105,10 +105,12 @@
     </div>
 
     <script type="module">
-        import { auth, signInWithEmailAndPassword } from "./js/firebase-config.js";
+        import { auth, db, signInWithEmailAndPassword } from "./js/firebase-config.js";
+        import { collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js";
 
         const passInput = document.getElementById("loginPass");
         const toggleIcon = document.getElementById("toggleIcon");
+        
         toggleIcon.addEventListener("click", () => {
             if (passInput.type === "password") {
                 passInput.type = "text";
@@ -119,18 +121,29 @@
             }
         });
 
-        document.getElementById("loginBtn").addEventListener("click", () => {
+        document.getElementById("loginBtn").addEventListener("click", async () => {
             const id = document.getElementById("loginId").value;
             const pass = document.getElementById("loginPass").value;
             const email = id + "@nikoniko.local";
 
-            signInWithEmailAndPassword(auth, email, pass)
-                .then(() => {
-                    window.location.href = "index.html";
-                })
-                .catch((error) => {
-                    document.getElementById("errorMessage").style.display = "block";
+            try {
+                await signInWithEmailAndPassword(auth, email, pass);
+                
+                const q = query(collection(db, "members"), where("loginId", "==", id));
+                const querySnapshot = await getDocs(q);
+                
+                let userRole = "会員"; 
+                querySnapshot.forEach((doc) => {
+                    userRole = doc.data().role;
                 });
+                
+                localStorage.setItem("userRole", userRole);
+                window.location.href = "index.html";
+                
+            } catch (error) {
+                console.error(error);
+                document.getElementById("errorMessage").style.display = "block";
+            }
         });
     </script>
 </body>
