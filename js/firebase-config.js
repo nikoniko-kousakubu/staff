@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
-import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js";
-import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js";
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyB4QGqGiEYK0RinYuO7wRL5Y0dUbg3uC4o",
@@ -16,7 +16,4 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-const app2 = initializeApp(firebaseConfig, "SecondaryApp");
-const auth2 = getAuth(app2);
-
-export { auth, db, auth2, onAuthStateChanged, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword, doc, setDoc, getDoc };
+export { auth, db, onAuthStateChanged, signInWithEmailAndPassword, signOut };
