@@ -22,63 +22,6 @@
             flex-direction: column;
             background-color: #f2f2f2;
         }
-        header {
-            flex-shrink: 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 60px;
-            padding: 0 20px;
-            background-color: #ffffff;
-            border-bottom: 1px solid #e0e0e0;
-        }
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .header-left img.icon { height: 40px; }
-        .header-left img.title { height: 30px; }
-        .header-right { position: relative; }
-        .user-profile {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            padding: 5px;
-            border-radius: 5px;
-        }
-        .user-profile:hover { background-color: #f5f5f5; }
-        .user-icon { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; }
-        .user-name { color: #000000; font-weight: bold; }
-        .role-badge {
-            padding: 4px 8px;
-            border-radius: 12px;
-            color: #ffffff;
-            font-size: 12px;
-            font-weight: bold;
-        }
-        .role-admin { background-color: #800080; }
-        .role-member { background-color: #FFAA00; }
-        .dropdown-icon { font-size: 10px; color: #666; }
-        .dropdown-menu {
-            display: none;
-            position: absolute;
-            top: 50px;
-            right: 0;
-            background-color: #ffffff;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            width: 150px;
-            z-index: 100;
-        }
-        .dropdown-menu.show { display: block; }
-        .dropdown-menu ul { list-style: none; padding: 0; margin: 0; }
-        .dropdown-menu li { padding: 12px 15px; font-size: 14px; cursor: pointer; border-bottom: 1px solid #eee; }
-        .dropdown-menu li:last-child { border-bottom: none; }
-        .dropdown-menu li:hover { background-color: #f9f9f9; }
-        .logout-text { color: #ff0000; font-weight: bold; }
         .breadcrumb {
             flex-shrink: 0;
             padding: 10px 20px;
@@ -101,34 +44,6 @@
             padding: 20px;
             background-color: #f9f9f9;
             overflow-y: auto;
-        }
-        .sidebar {
-            width: 80px;
-            background-color: #ffffff;
-            border-left: 1px solid #e0e0e0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px 0 80px 0;
-            gap: 25px;
-            overflow-y: auto;
-        }
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-decoration: none;
-            color: #333;
-            font-size: 11px;
-            cursor: pointer;
-        }
-        .nav-item:hover { opacity: 0.7; }
-        .nav-item img {
-            width: 36px;
-            height: 36px;
-            border-radius: 14px;
-            margin-bottom: 5px;
-            object-fit: cover;
         }
         .admin-only { display: flex; }
         .is-member .admin-only { display: none !important; }
@@ -213,6 +128,15 @@
         .member-id { font-size: 12px; color: #666; }
         .name-kanji { font-size: 18px; font-weight: bold; color: #333; margin-top: 5px; }
         .name-kana { font-size: 12px; color: #888; }
+        .role-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .role-admin { background-color: #800080; }
+        .role-member { background-color: #FFAA00; }
 
         .modal-overlay {
             display: none;
@@ -270,6 +194,7 @@
             gap: 15px;
         }
         .form-full-width { grid-column: span 2; }
+        .section-title { grid-column: span 2; font-size: 14px; margin-top: 10px; border-bottom: 1px solid #ccc; padding-bottom: 5px; }
         .school-table {
             width: 100%;
             border-collapse: collapse;
@@ -297,29 +222,10 @@
 </head>
 <body class="is-admin">
 
-    <header>
-        <div class="header-left">
-            <img src="../file/icon.png" alt="" class="icon">
-            <img src="../file/title.png" alt="" class="title">
-        </div>
-        <div class="header-right">
-            <div class="user-profile" onclick="toggleMenu()">
-                <img src="../file/icon.png" alt="" class="user-icon">
-                <span class="user-name">山田 太郎</span>
-                <span class="role-badge role-admin">役員</span>
-                <span class="dropdown-icon">▼</span>
-            </div>
-            <div class="dropdown-menu" id="dropdownMenu">
-                <ul>
-                    <li>アカウント情報</li>
-                    <li class="logout-text">ログアウト</li>
-                </ul>
-            </div>
-        </div>
-    </header>
+    <div id="header-container"></div>
 
     <div class="breadcrumb">
-        <a href="../index.html">トップ</a>
+        <a href="../index.html">トップ</a> > メンバー
     </div>
 
     <div class="container">
@@ -386,60 +292,10 @@
                         <div class="name-kana">やまだ たろう</div>
                     </div>
                 </div>
-                <div class="member-card">
-                    <div class="member-photo-area">
-                        <img src="../file/dummy.jpg" alt="">
-                    </div>
-                    <div class="member-info-area">
-                        <div class="info-top-row">
-                            <span class="member-id">5678</span>
-                            <span class="role-badge role-member">会員</span>
-                        </div>
-                        <div class="name-kanji">佐藤 花子</div>
-                        <div class="name-kana">さとう はなこ</div>
-                    </div>
-                </div>
             </div>
         </div>
 
-        <div class="sidebar">
-            <a href="../index.html" class="nav-item">
-                <img src="../file/top.jpg" alt="">
-                <span>トップ</span>
-            </a>
-            <div class="nav-item">
-                <img src="../file/board.jpg" alt="">
-                <span>掲示板</span>
-            </div>
-            <div class="nav-item">
-                <img src="../file/calendar.jpg" alt="">
-                <span>カレンダー</span>
-            </div>
-            <div class="nav-item">
-                <img src="../file/meeting.jpg" alt="">
-                <span>会議</span>
-            </div>
-            <div class="nav-item">
-                <img src="../file/history.jpg" alt="">
-                <span>活動記録</span>
-            </div>
-            <div class="nav-item">
-                <img src="../file/materials.jpg" alt="">
-                <span>資料</span>
-            </div>
-            <div class="nav-item admin-only">
-                <img src="../file/members.jpg" alt="">
-                <span>メンバー</span>
-            </div>
-            <div class="nav-item admin-only">
-                <img src="../file/report.jpg" alt="">
-                <span>レポート</span>
-            </div>
-            <div class="nav-item">
-                <img src="../file/setting.jpg" alt="">
-                <span>設定</span>
-            </div>
-        </div>
+        <div id="sidebar-container"></div>
 
     </div>
 
@@ -454,6 +310,17 @@
                     <input type="file" id="imageUpload" accept="image/*">
                 </div>
                 <div class="form-right">
+                    <div class="section-title">システムログイン情報</div>
+                    <div class="input-group">
+                        <label>ログインID (半角英数字)</label>
+                        <input type="text" id="newLoginId" placeholder="例: admin">
+                    </div>
+                    <div class="input-group">
+                        <label>パスワード (6文字以上)</label>
+                        <input type="text" id="newLoginPass">
+                    </div>
+
+                    <div class="section-title">基本情報</div>
                     <div class="input-group">
                         <label>会員番号 (半角数字)</label>
                         <input type="number">
@@ -544,35 +411,34 @@
     </div>
 
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-analytics.js";
-        
-        const firebaseConfig = {
-            apiKey: "AIzaSyB4QGqGiEYK0RinYuO7wRL5Y0dUbg3uC4o",
-            authDomain: "staff-d1c5e.firebaseapp.com",
-            projectId: "staff-d1c5e",
-            storageBucket: "staff-d1c5e.firebasestorage.app",
-            messagingSenderId: "426025479665",
-            appId: "1:426025479665:web:cdb38a5640036aff18a850",
-            measurementId: "G-DV9FLZSWVE"
-        };
-        const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
+        import { auth, onAuthStateChanged, signOut } from "../js/firebase-config.js";
+        import { renderHeader, renderSidebar } from "../js/components.js";
+
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.href = "../login.html";
+            } else {
+                renderHeader();
+                renderSidebar();
+                
+                const userRole = localStorage.getItem("userRole");
+                if (userRole === "会員") {
+                    document.body.classList.add("is-member");
+                    document.body.classList.remove("is-admin");
+                }
+
+                document.getElementById("logoutBtn").addEventListener("click", () => {
+                    signOut(auth).then(() => {
+                        localStorage.removeItem("userRole");
+                        window.location.href = "../login.html";
+                    });
+                });
+            }
+        });
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.1/dist/browser-image-compression.js"></script>
     <script>
-        function toggleMenu() {
-            document.getElementById('dropdownMenu').classList.toggle('show');
-        }
-        window.onclick = function(event) {
-            if (!event.target.closest('.header-right')) {
-                const menu = document.getElementById('dropdownMenu');
-                if (menu.classList.contains('show')) {
-                    menu.classList.remove('show');
-                }
-            }
-        }
         function openModal() {
             document.getElementById('createModal').classList.add('show');
         }
